@@ -14,3 +14,8 @@
 
 # e será desenvolvido com React, TypeScript e Tailwind CSS.
 
+#Autor:
+Douglas Robeto dos S. Guedes
+
+#Fase 1:
+Entrega do Wireframe
