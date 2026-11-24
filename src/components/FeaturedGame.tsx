@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Game } from '../data/types'
 
 type FeaturedGameProps = {
@@ -5,6 +6,8 @@ type FeaturedGameProps = {
 }
 
 function FeaturedGame({ game }: FeaturedGameProps) {
+  const [imageFailed, setImageFailed] = useState<boolean>(false)
+
   return (
     <section className="featured-game" aria-labelledby="featured-title">
       <div className="featured-copy">
@@ -20,7 +23,10 @@ function FeaturedGame({ game }: FeaturedGameProps) {
         </div>
         <button className="button button-light" type="button">Ver oferta</button>
       </div>
-      <div className="image-placeholder featured-image" role="img" aria-label={`Imagem ilustrativa do jogo ${game.name}`}>IMG</div>
+      <div className="image-placeholder featured-image" role="img" aria-label={`Imagem ilustrativa do jogo ${game.name}`}>
+        {!imageFailed && <img src={game.cover} alt={`Capa de ${game.name}`} className="cover-image" onError={() => setImageFailed(true)} />}
+        IMG
+      </div>
     </section>
   )
 }

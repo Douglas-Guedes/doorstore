@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Game } from '../data/types'
 
 type GameCardProps = {
@@ -5,9 +6,14 @@ type GameCardProps = {
 }
 
 function GameCard({ game }: GameCardProps) {
+  const [imageFailed, setImageFailed] = useState<boolean>(false)
+
   return (
     <article className="game-card">
-      <div className="image-placeholder card-image" role="img" aria-label={`Imagem ilustrativa de ${game.name}`}>IMG</div>
+      <div className="image-placeholder card-image" role="img" aria-label={`Imagem ilustrativa de ${game.name}`}>
+        {!imageFailed && <img src={game.cover} alt={`Capa de ${game.name}`} className="cover-image" onError={() => setImageFailed(true)} />}
+        IMG
+      </div>
       <button className="favorite-button" type="button" aria-label={`Favoritar ${game.name}`}>♡</button>
       <div className="game-card-content">
         <h3>{game.name}</h3>
