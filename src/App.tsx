@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import FeaturedGame from './components/FeaturedGame'
 import FilterSidebar from './components/FilterSidebar'
@@ -7,11 +7,24 @@ import GameGrid from './components/GameGrid'
 import GenreChips from './components/GenreChips'
 import Header from './components/Header'
 import UpcomingList from './components/UpcomingList'
-import { featuredGame, games, genres } from './data/games'
+import { fetchGames } from './data/api'
+import { featuredGame, genres } from './data/games'
+import type { Game } from './data/types'
 import { upcomingGames } from './data/upcomingGames'
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState<string>('Todos')
+  const [games, setGames] = useState<Game[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean>(false)
+
+  useEffect(() => {
+    fetchGames()
+      .then((data) => setGames(data))
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
+  }, [])
+
   const visibleGames = selectedGenre === 'Todos'
     ? games
     : games.filter((game) => game.genre === selectedGenre)
@@ -37,10 +50,18 @@ function App() {
               selectedGenre={selectedGenre}
               onSelectGenre={setSelectedGenre}
             />
-            <GameGrid games={visibleGames} />
-            <p className="listing-note">
-              Mostrando {visibleGames.length} ofertas especiais. Preços, notas e descontos ilustrativos, apenas para fins acadêmicos.
-            </p>
+            {loading ? (
+              <p className="listing-note">Carregando ofertas...</p>
+            ) : error ? (
+              <p className="listing-note error-message" role="alert">Não foi possível carregar as ofertas. Tente novamente mais tarde.</p>
+            ) : (
+              <>
+                <GameGrid games={visibleGames} />
+                <p className="listing-note">
+                  Mostrando {visibleGames.length} ofertas especiais. Preços, notas e descontos ilustrativos, apenas para fins acadêmicos.
+                </p>
+              </>
+            )}
           </section>
           <section className="upcoming-section" id="em-breve" aria-labelledby="upcoming-title">
             <div className="section-heading">
