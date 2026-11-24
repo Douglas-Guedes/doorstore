@@ -6,7 +6,9 @@ import Footer from './components/Footer'
 import GameGrid from './components/GameGrid'
 import GenreChips from './components/GenreChips'
 import Header from './components/Header'
+import PurchasePanel from './components/PurchasePanel'
 import UpcomingList from './components/UpcomingList'
+import WishlistModal from './components/WishlistModal'
 import { fetchGames } from './data/api'
 import { featuredGame, genres } from './data/games'
 import type { Game } from './data/types'
@@ -17,6 +19,9 @@ function App() {
   const [games, setGames] = useState<Game[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
+  const [wishlist, setWishlist] = useState<number[]>([])
+  const [isWishlistOpen, setIsWishlistOpen] = useState<boolean>(false)
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null)
 
   useEffect(() => {
     fetchGames()
@@ -28,12 +33,31 @@ function App() {
   const visibleGames = selectedGenre === 'Todos'
     ? games
     : games.filter((game) => game.genre === selectedGenre)
+  const wishlistGames = games.filter((game) => wishlist.includes(game.id))
+
+  function toggleWishlist(id: number) {
+    setWishlist((currentWishlist) => currentWishlist.includes(id)
+      ? currentWishlist.filter((gameId) => gameId !== id)
+      : [...currentWishlist, id])
+  }
 
   return (
     <div className="site-shell">
-      <Header />
+      <Header
+        wishlistCount={wishlist.length}
+        onOpenWishlist={() => {
+          setSelectedGame(null)
+          setIsWishlistOpen(true)
+        }}
+      />
       <main className="page-content" id="inicio">
-        <FeaturedGame game={featuredGame} />
+        <FeaturedGame
+          game={featuredGame}
+          onBuy={() => {
+            setIsWishlistOpen(false)
+            setSelectedGame(featuredGame)
+          }}
+        />
         <div className="catalog-layout">
           <FilterSidebar
             genres={genres}
@@ -56,7 +80,15 @@ function App() {
               <p className="listing-note error-message" role="alert">Não foi possível carregar as ofertas. Tente novamente mais tarde.</p>
             ) : (
               <>
-                <GameGrid games={visibleGames} />
+                <GameGrid
+                  games={visibleGames}
+                  wishlist={wishlist}
+                  onToggleFavorite={toggleWishlist}
+                  onBuy={(game) => {
+                    setIsWishlistOpen(false)
+                    setSelectedGame(game)
+                  }}
+                />
                 <p className="listing-note">
                   Mostrando {visibleGames.length} ofertas especiais. Preços, notas e descontos ilustrativos, apenas para fins acadêmicos.
                 </p>
@@ -73,6 +105,19 @@ function App() {
         </div>
       </main>
       <Footer />
+      {isWishlistOpen && (
+        <WishlistModal
+          games={wishlistGames}
+          onClose={() => setIsWishlistOpen(false)}
+          onRemove={toggleWishlist}
+        />
+      )}
+      {selectedGame && (
+        <PurchasePanel
+          game={selectedGame}
+          onClose={() => setSelectedGame(null)}
+        />
+      )}
     </div>
   )
 }

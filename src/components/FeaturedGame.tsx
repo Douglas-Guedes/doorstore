@@ -3,9 +3,10 @@ import type { Game } from '../data/types'
 
 type FeaturedGameProps = {
   game: Game
+  onBuy: () => void
 }
 
-function FeaturedGame({ game }: FeaturedGameProps) {
+function FeaturedGame({ game, onBuy }: FeaturedGameProps) {
   const [imageFailed, setImageFailed] = useState<boolean>(false)
 
   return (
@@ -21,7 +22,7 @@ function FeaturedGame({ game }: FeaturedGameProps) {
             <strong className="current-price">{game.price}</strong>
           </div>
         </div>
-        <button className="button button-light" type="button">Ver oferta</button>
+        <button className="button button-light" type="button" onClick={onBuy}>Ver oferta</button>
       </div>
       <div className="image-placeholder featured-image" role="img" aria-label={`Imagem ilustrativa do jogo ${game.name}`}>
         {!imageFailed && <img src={game.cover} alt={`Capa de ${game.name}`} className="cover-image" onError={() => setImageFailed(true)} />}
