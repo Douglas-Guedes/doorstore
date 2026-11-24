@@ -1,6 +1,7 @@
 export type Game = {
   id: number
   name: string
+  cover: string
   genre: string
   rating: number
   oldPrice: string
