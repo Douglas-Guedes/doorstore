@@ -1,4 +1,9 @@
-function Header() {
+type HeaderProps = {
+  wishlistCount: number
+  onOpenWishlist: () => void
+}
+
+function Header({ wishlistCount, onOpenWishlist }: HeaderProps) {
   return (
     <header className="site-header">
       <div className="header-content">
@@ -16,7 +21,17 @@ function Header() {
           <span className="visually-hidden">Buscar jogos</span>
           <input type="search" placeholder="Buscar jogos..." />
         </label>
-        <button className="wishlist-button" type="button">♡ Lista de desejos</button>
+        <button className="wishlist-button" type="button" onClick={onOpenWishlist}>
+          ♡ Lista de desejos ({wishlistCount})
+        </button>
+        <button
+          className="wishlist-mobile-button"
+          type="button"
+          aria-label={`Lista de desejos (${wishlistCount})`}
+          onClick={onOpenWishlist}
+        >
+          ♡ {wishlistCount}
+        </button>
         <button className="menu-button" type="button" aria-label="Abrir menu">☰</button>
       </div>
     </header>
