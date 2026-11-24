@@ -8,6 +8,7 @@ function Footer() {
             <span>DoorStore</span>
           </a>
           <p>Vitrine acadêmica de chaves de jogos para PC.</p>
+          <p className="footer-founder">Fundador: Douglas Roberto dos S. Guedes - MK-001</p>
         </div>
         <div className="footer-link-groups">
           <nav className="footer-group" aria-label="Navegação do rodapé">
@@ -35,7 +36,10 @@ function Footer() {
             </ul>
           </nav>
         </div>
-        <p className="copyright">© 2026 DoorStore · Projeto acadêmico</p>
+        <p className="copyright">
+          <span>© 2026 DoorStore · Projeto acadêmico</span>
+          <span className="copyright-brand">MKorp® Interactive</span>
+        </p>
       </div>
     </footer>
   )
