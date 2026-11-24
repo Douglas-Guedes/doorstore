@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './App.css'
 import FeaturedGame from './components/FeaturedGame'
 import FilterSidebar from './components/FilterSidebar'
 import Footer from './components/Footer'
@@ -42,7 +41,7 @@ function App() {
   }
 
   return (
-    <div className="site-shell">
+    <div className="min-h-screen overflow-x-clip bg-[#f3f4f6] font-[Arial,Helvetica,sans-serif] leading-[1.5] text-[#1f2937]">
       <Header
         wishlistCount={wishlist.length}
         onOpenWishlist={() => {
@@ -50,7 +49,7 @@ function App() {
           setIsWishlistOpen(true)
         }}
       />
-      <main className="page-content" id="inicio">
+      <main className="mx-auto w-full p-4 md:px-6 md:py-5 lg:max-w-[80rem] lg:p-6" id="inicio">
         <FeaturedGame
           game={featuredGame}
           onBuy={() => {
@@ -58,16 +57,16 @@ function App() {
             setSelectedGame(featuredGame)
           }}
         />
-        <div className="catalog-layout">
+        <div className="mt-8 flex flex-col gap-8 md:gap-8 lg:grid lg:grid-cols-[13.75rem_minmax(0,1fr)_16.25rem] lg:items-start lg:gap-x-6 lg:gap-y-0">
           <FilterSidebar
             genres={genres}
             selectedGenre={selectedGenre}
             onSelectGenre={setSelectedGenre}
           />
-          <section className="promotions-section" id="promocoes" aria-labelledby="promotions-title">
-            <div className="section-heading">
-              <h2 id="promotions-title">Promoções</h2>
-              <span className="sort-label">Ordenar ▾</span>
+          <section className="min-w-0" id="promocoes" aria-labelledby="promotions-title">
+            <div className="mb-4 flex items-center justify-between gap-3 lg:mb-5">
+              <h2 id="promotions-title" className="m-0 border-l-4 border-[#2563eb] pl-3 font-[Arial,Helvetica,sans-serif] text-[1.35rem] font-bold leading-[1.2] text-[#0f2354]">Promoções</h2>
+              <span className="whitespace-nowrap text-[0.8rem] font-bold text-[#2563eb] md:hidden lg:inline">Ordenar ▾</span>
             </div>
             <GenreChips
               genres={genres}
@@ -75,9 +74,9 @@ function App() {
               onSelectGenre={setSelectedGenre}
             />
             {loading ? (
-              <p className="listing-note">Carregando ofertas...</p>
+              <p className="m-0 mt-4 text-center text-[0.75rem] text-[#6b7280]">Carregando ofertas...</p>
             ) : error ? (
-              <p className="listing-note error-message" role="alert">Não foi possível carregar as ofertas. Tente novamente mais tarde.</p>
+              <p className="m-0 mt-4 text-center text-[0.75rem] text-[#991b1b]" role="alert">Não foi possível carregar as ofertas. Tente novamente mais tarde.</p>
             ) : (
               <>
                 <GameGrid
@@ -89,16 +88,16 @@ function App() {
                     setSelectedGame(game)
                   }}
                 />
-                <p className="listing-note">
+                <p className="m-0 mt-4 text-center text-[0.75rem] text-[#6b7280]">
                   Mostrando {visibleGames.length} ofertas especiais. Preços, notas e descontos ilustrativos, apenas para fins acadêmicos.
                 </p>
               </>
             )}
           </section>
-          <section className="upcoming-section" id="em-breve" aria-labelledby="upcoming-title">
-            <div className="section-heading">
-              <h2 id="upcoming-title">Em breve</h2>
-              <span className="sort-label upcoming-more">Lançamentos</span>
+          <section className="min-w-0" id="em-breve" aria-labelledby="upcoming-title">
+            <div className="mb-4 flex items-center justify-between gap-3 lg:mb-5">
+              <h2 id="upcoming-title" className="m-0 border-l-4 border-[#2563eb] pl-3 font-[Arial,Helvetica,sans-serif] text-[1.35rem] font-bold leading-[1.2] text-[#0f2354]">Em breve</h2>
+              <span className="hidden text-[0.8rem] font-bold text-[#2563eb]">Lançamentos</span>
             </div>
             <UpcomingList games={upcomingGames} />
           </section>
